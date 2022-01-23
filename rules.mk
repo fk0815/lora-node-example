@@ -72,6 +72,9 @@ TGT_CFLAGS += -fno-common
 TGT_CFLAGS += -ffunction-sections -fdata-sections
 TGT_CFLAGS += -Wextra -Wshadow -Wno-unused-variable -Wimplicit-function-declaration
 TGT_CFLAGS += -Wredundant-decls -Wstrict-prototypes -Wmissing-prototypes
+ifeq ($(DEBUG),semihost)
+TGT_CFLAGS += -DDEBUG_SEMIHOST=1
+endif
 
 TGT_CXXFLAGS += $(OPT) $(CXXSTD) -ggdb3
 TGT_CXXFLAGS += $(ARCH_FLAGS)
@@ -96,8 +99,12 @@ ifeq (,$(DEVICE))
 LDLIBS += -l$(OPENCM3_LIB)
 endif
 # nosys is only in newer gcc-arm-embedded...
-#LDLIBS += -specs=nosys.specs
-LDLIBS += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
+ifeq ($(DEBUG),semihost)
+LDLIBS += -specs=rdimon.specs
+else
+LDLIBS += -specs=nosys.specs
+endif
+LDLIBS += -Wl,--start-group -lc -lgcc -Wl,--end-group
 
 # Burn in legacy hell fortran modula pascal yacc idontevenwat
 .SUFFIXES:

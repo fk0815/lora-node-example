@@ -1,5 +1,4 @@
-MIT License
-
+/*
 Copyright © 2022 Frank Kunz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,3 +18,20 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#ifndef COMMON_DEBUG_H_
+#define COMMON_DEBUG_H_
+
+#if defined(DEBUG_SEMIHOST)
+#include <stdint.h>
+void debug_printf_init(void);
+void debug_hexdump(char *, void *, unsigned);
+void debug_print_event(uint8_t);
+#else
+#define debug_printf_init()
+#define debug_hexdump(a,b,c)
+#define debug_print_event(e)
+#endif
+
+#endif /* COMMON_DEBUG_H_ */
